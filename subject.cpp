@@ -93,4 +93,15 @@ double Subject::speed()
     return sqrt(_dx * _dx + _dy * _dy);
 }
 
+void Subject::setMovement(MovementStrategy *strategy)
+{
+    this->_strategy = strategy;
+}
+
+void Subject::runStrategy(double dt)
+{
+    this->set_x(this->_strategy->run(this->x(), this->dx(), dt));
+    this->set_y(this->_strategy->run(this->y(), this->dy(), dt));
+}
+
 }

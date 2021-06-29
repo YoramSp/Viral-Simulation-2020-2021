@@ -18,6 +18,14 @@
 #include <iostream>
 #include <emscripten.h>
 #include <math.h>
+#include "RegularMovementStrategy.cpp"
+#include "LockdownMovementStrategy.cpp"
+
+
+// Objecten van de strategies
+corsim::RegularMovementStrategy RMS;
+corsim::LockdownMovementStrategy LMS;
+
 
 namespace corsim
 {
@@ -38,12 +46,31 @@ void Simulation::run()
     }
 
     running = true;
+    this->setStrategy();
 
     while(true)
     {
         this->tick();
         emscripten_sleep(tick_speed);
     }
+}
+
+void Simulation::setStrategy()
+{
+    for (int i = 0; i < this->_subjects.size(); i++)
+    {
+        if (i < (this->_subjects.size() * 0.25))
+        {
+            // 25% van de groep: RegularMovementStrategy (RMS)
+            this->_subjects.at(i).setMovement(&RMS);
+        }
+        else
+        {
+            // De rest: LockdownMovementStrategy (LMS)
+            this->_subjects.at(i).setMovement(&LMS);
+        }
+    }
+
 }
 
 int counter  = 0;
@@ -78,8 +105,13 @@ void Simulation::tick()
 
     for(Subject& s : _subjects)
     {
-        s.set_x(s.x() + s.dx() * dt);
-        s.set_y(s.y() + s.dy() * dt);
+        // Oude situatie
+
+        // s.set_x(s.x() + s.dx() * dt);
+        // s.set_y(s.y() + s.dy() * dt);
+        
+        // Overerving om strategie aan de hand van groepsgrote te bepalen
+        s.runStrategy(dt);
 
         if(s.infected())
         {
