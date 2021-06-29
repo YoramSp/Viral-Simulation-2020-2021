@@ -57,6 +57,7 @@ void Simulation::run()
 
 void Simulation::setStrategy()
 {
+    // Opdracht A (B1 uitcommenteren om dit te laten werken)
     for (int i = 0; i < this->_subjects.size(); i++)
     {
         if (i < (this->_subjects.size() * 0.25))
@@ -111,7 +112,22 @@ void Simulation::tick()
         // s.set_y(s.y() + s.dy() * dt);
         
         // Overerving om strategie aan de hand van groepsgrote te bepalen
+        // Opdracht B1 (uitcommenteren voor opdracht A werkend te krijgen)
         s.runStrategy(dt);
+        for (int i = 0; i < this->_subjects.size(); i++)
+        {
+            if(numberInfected >= (this->_subjects.size() * 0.5))
+            {
+                if(i < (this->_subjects.size() * 0.25)){
+                    this->_subjects.at(i).setMovement(&RMS);
+                } else {
+                    this->_subjects.at(i).setMovement(&LMS);
+                }
+            } else {
+                s.setMovement(&RMS);
+            }
+        }
+        // Tot hier uit commenteren
 
         if(s.infected())
         {
