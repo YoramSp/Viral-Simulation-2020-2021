@@ -112,8 +112,8 @@ void Simulation::tick()
         // s.set_y(s.y() + s.dy() * dt);
         
         // Overerving om strategie aan de hand van groepsgrote te bepalen
-        // Opdracht B1 (uitcommenteren voor opdracht A werkend te krijgen)
         s.runStrategy(dt);
+        // Opdracht B1 (uitcommenteren voor opdracht A werkend te krijgen)
         for (int i = 0; i < this->_subjects.size(); i++)
         {
             if(numberInfected >= (this->_subjects.size() * 0.5))
